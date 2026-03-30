@@ -20,36 +20,17 @@ class DataIngestion:
         except Exception as e:
             raise MyException(e,sys)
         
-    def export_data(self, path,)->DataFrame:
+    def export_data(self,)->DataFrame:
+        logging.info("data Collection started from RemoteLike Storage")
         
         storage = RemoteStorage(self.data_ingestion_config.Remote_Dir_path_Ingestion)
-        return storage.Retrieve_Data(self.data_ingestion_config.Remote_DB_Name)
-
-        pass
-
-    def export_data_into_feature_store(self)->DataFrame:
-        """
-        Method Name :   export_data_into_feature_store
-        Description :   This method exports data from mongodb to csv file
         
-        Output      :   data is returned as artifact of data ingestion components
-        On Failure  :   Write an exception log and then raise an exception
-        """
-        try:
-            logging.info(f"Exporting data from mongodb")
-            my_data = Proj1Data()
-            dataframe = my_data.export_collection_as_dataframe(collection_name=
-                                                                   self.data_ingestion_config.collection_name)
-            logging.info(f"Shape of dataframe: {dataframe.shape}")
-            feature_store_file_path  = self.data_ingestion_config.feature_store_file_path
-            dir_path = os.path.dirname(feature_store_file_path)
-            os.makedirs(dir_path,exist_ok=True)
-            logging.info(f"Saving exported data into feature store file path: {feature_store_file_path}")
-            dataframe.to_csv(feature_store_file_path,index=False,header=True)
-            return dataframe
+        df = storage.Retrieve_Data(self.data_ingestion_config.Remote_DB_Name)
+        
+        logging.info("Data Retrival Finished from RemoteLike Storage")
+        
+        return df
 
-        except Exception as e:
-            raise MyException(e,sys)
 
     def split_data_as_train_test(self,dataframe: DataFrame) ->None:
         """
@@ -89,8 +70,8 @@ class DataIngestion:
         logging.info("Entered initiate_data_ingestion method of Data_Ingestion class")
 
         try:
-            dataframe = self.export_data_into_feature_store()
-
+            dataframe = self.export_data()
+            print(dataframe)
             logging.info("Got the data from Remote Storage (MongoDB or MongoLike)")
 
             self.split_data_as_train_test(dataframe)

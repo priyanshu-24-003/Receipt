@@ -1,5 +1,7 @@
 from pandas import DataFrame, read_csv
-import os
+import os,sys
+from src.exception import MyException
+
 
 class RemoteStorage():
     """
@@ -18,8 +20,7 @@ class RemoteStorage():
 
             return data_frame
         except Exception as e:
-            try:
-                
+            raise MyException(e, sys) from e
 
     
 
