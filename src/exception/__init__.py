@@ -30,7 +30,7 @@ class MyException(Exception):
     """
     def __init__(self, error_message: str, error_detail: sys):
         """
-        Initializes the USvisaException with a detailed error message.
+        Initializes the Exception with a detailed error message.
 
         :param error_message: A string describing the error.
         :param error_detail: The sys module to access traceback details.
