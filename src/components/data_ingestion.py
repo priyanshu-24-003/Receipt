@@ -71,7 +71,6 @@ class DataIngestion:
 
         try:
             dataframe = self.export_data()
-            print(dataframe)
             logging.info("Got the data from Remote Storage (MongoDB or MongoLike)")
 
             self.split_data_as_train_test(dataframe)

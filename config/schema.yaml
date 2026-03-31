@@ -1,0 +1,29 @@
+columns:
+  - age: int
+  - sex: category
+  - bmi: float
+  - children: int
+  - smoker: category
+  - region: category
+  - charges: float
+
+numerical_columns:
+  - age
+  - bmi
+  - children
+  - charges
+
+categorical_columns:
+  - sex
+  - smoker
+  - region
+
+
+# for data transformation (scaling, label/feature encoding etc)
+Encode:
+  - sex
+  - smoker
+  - region
+
+scaling:
+  - bmi
