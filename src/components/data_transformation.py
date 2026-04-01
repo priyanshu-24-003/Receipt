@@ -10,7 +10,7 @@ from src.entity.config_entity import DataTransformationConfig
 from src.entity.artifact_entity import DataTransformationArtifact, DataIngestionArtifact, DataValidationArtifact
 from src.exception import MyException
 from src.logger import logging
-from src.utils.main_utils import save_object, save_numpy_array_data, read_yaml_file
+from src.utils.main_utils import save_object, save_numpy_array_data, read_yaml_file, save_dataframe_csv
 
 
 class DataTransformation:
@@ -116,12 +116,10 @@ class DataTransformation:
             logging.info("feature-target concatenation done for train-test df.")
 
             save_object(self.data_transformation_config.transformed_object_file_path, preprocessor)
-            os.makedirs(os.path.dirname(self.data_transformation_config.transformed_train_file_path), exist_ok=True)
-            os.makedirs(os.path.dirname(self.data_transformation_config.transformed_test_file_path), exist_ok=True)
-            train_arr.to_csv(self.data_transformation_config.transformed_train_file_path,index=False)
-            test_arr.to_csv(self.data_transformation_config.transformed_test_file_path,index=False)
+            
+            save_dataframe_csv(train_arr,path=self.data_transformation_config.transformed_train_file_path,)
+            save_dataframe_csv(test_arr,self.data_transformation_config.transformed_test_file_path)
 
-            save_numpy_array_data(self.data_transformation_config.transformed_test_file_path, array=test_arr)
             logging.info("Saving transformation object and transformed files.")
 
             logging.info("Data transformation completed successfully")

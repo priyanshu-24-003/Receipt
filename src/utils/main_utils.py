@@ -90,6 +90,14 @@ def load_numpy_array_data(file_path: str) -> np.array:
 
 
 
+def save_dataframe_csv(df:DataFrame, path:str):
+    try:
+        save_file = os.makedirs(os.path.dirname(path), exist_ok=True)
+        df.to_csv(path, index=False)
+    except Exception as e:
+        raise MyException(e, sys) from e
+
+
 def drop_columns(df: DataFrame, cols: list)-> DataFrame:
 
     """
