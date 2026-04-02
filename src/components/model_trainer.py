@@ -2,15 +2,15 @@ import sys
 from typing import Tuple
 
 import numpy as np
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_absolute_error
 
 from src.exception import MyException
 from src.logger import logging
-from src.utils.main_utils import load_numpy_array_data, load_object, save_object
+from src.utils.main_utils import load_numpy_array_data, load_object, save_object, load_dataframe_artifact
 from src.entity.config_entity import ModelTrainerConfig
 from src.entity.artifact_entity import DataTransformationArtifact, ModelTrainerArtifact, ClassificationMetricArtifact
-from src.entity.estimator import MyModel
+# from src.entity.estimator import MyModel
 
 class ModelTrainer:
     def __init__(self, data_transformation_artifact: DataTransformationArtifact,
@@ -38,7 +38,7 @@ class ModelTrainer:
             logging.info("train-test split done.")
 
             # Initialize RandomForestClassifier with specified parameters
-            model = RandomForestClassifier(
+            model = RandomForestRegressor(
                 n_estimators = self.model_trainer_config._n_estimators,
                 min_samples_split = self.model_trainer_config._min_samples_split,
                 min_samples_leaf = self.model_trainer_config._min_samples_leaf,
@@ -79,10 +79,15 @@ class ModelTrainer:
             print("------------------------------------------------------------------------------------------------")
             print("Starting Model Trainer Component")
             # Load transformed train and test data
-            train_arr = load_numpy_array_data(file_path=self.data_transformation_artifact.transformed_train_file_path)
-            test_arr = load_numpy_array_data(file_path=self.data_transformation_artifact.transformed_test_file_path)
+            train_arr = load_dataframe_artifact(file_path=self.data_transformation_artifact.transformed_train_file_path)
+            test_arr = load_dataframe_artifact(file_path=self.data_transformation_artifact.transformed_test_file_path)
             logging.info("train-test data loaded")
-            
+            print(train_arr.head(2))
+            print(test_arr.head(2))
+
+            exit()
+
+
             # Train model and get metrics
             trained_model, metric_artifact = self.get_model_object_and_report(train=train_arr, test=test_arr)
             logging.info("Model object and artifact loaded.")

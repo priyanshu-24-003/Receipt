@@ -4,7 +4,7 @@ import sys
 import numpy as np
 import dill
 import yaml
-from pandas import DataFrame
+from pandas import DataFrame, read_csv
 
 from src.exception import MyException
 from src.logger import logging
@@ -97,6 +97,12 @@ def save_dataframe_csv(df:DataFrame, path:str):
     except Exception as e:
         raise MyException(e, sys) from e
 
+
+def load_dataframe_artifact(file_path)-> DataFrame:
+    try:
+        return read_csv(file_path)
+    except Exception as e:
+        raise MyException(e, sys) from e
 
 def drop_columns(df: DataFrame, cols: list)-> DataFrame:
 
