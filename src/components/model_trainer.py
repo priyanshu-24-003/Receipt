@@ -4,13 +4,12 @@ from typing import Tuple
 import numpy as np
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error
-
 from src.exception import MyException
 from src.logger import logging
 from src.utils.main_utils import load_numpy_array_data, load_object, save_object, load_dataframe_artifact
 from src.entity.config_entity import ModelTrainerConfig
 from src.entity.artifact_entity import DataTransformationArtifact, ModelTrainerArtifact, ClassificationMetricArtifact
-# from src.entity.estimator import MyModel
+from src.entity.estimator import MyModel
 
 class ModelTrainer:
     def __init__(self, data_transformation_artifact: DataTransformationArtifact,
@@ -34,7 +33,7 @@ class ModelTrainer:
             logging.info("Training RandomForestClassifier with specified parameters")
 
             # Splitting the train and test data into features and target variables
-            x_train, y_train, x_test, y_test = train[:, :-1], train[:, -1], test[:, :-1], test[:, -1]
+            x_train, y_train, x_test, y_test = train.iloc[:, :-1], train.iloc[:, -1], test.iloc[:, :-1], test.iloc[:, -1]
             logging.info("train-test split done.")
 
             # Initialize RandomForestClassifier with specified parameters
@@ -43,7 +42,6 @@ class ModelTrainer:
                 min_samples_split = self.model_trainer_config._min_samples_split,
                 min_samples_leaf = self.model_trainer_config._min_samples_leaf,
                 max_depth = self.model_trainer_config._max_depth,
-                criterion = self.model_trainer_config._criterion,
                 random_state = self.model_trainer_config._random_state
             )
 
@@ -54,13 +52,11 @@ class ModelTrainer:
 
             # Predictions and evaluation metrics
             y_pred = model.predict(x_test)
-            accuracy = accuracy_score(y_test, y_pred)
-            f1 = f1_score(y_test, y_pred)
-            precision = precision_score(y_test, y_pred)
-            recall = recall_score(y_test, y_pred)
-
+            MAE = mean_absolute_error(y_test, y_pred)
+            logging.info(f"MAE on the test dataset by the Currently trained model {MAE}")
+            
             # Creating metric artifact
-            metric_artifact = ClassificationMetricArtifact(f1_score=f1, precision_score=precision, recall_score=recall)
+            metric_artifact = ClassificationMetricArtifact(mean_absolute_error=MAE)
             return model, metric_artifact
         
         except Exception as e:
@@ -82,12 +78,7 @@ class ModelTrainer:
             train_arr = load_dataframe_artifact(file_path=self.data_transformation_artifact.transformed_train_file_path)
             test_arr = load_dataframe_artifact(file_path=self.data_transformation_artifact.transformed_test_file_path)
             logging.info("train-test data loaded")
-            print(train_arr.head(2))
-            print(test_arr.head(2))
-
-            exit()
-
-
+            
             # Train model and get metrics
             trained_model, metric_artifact = self.get_model_object_and_report(train=train_arr, test=test_arr)
             logging.info("Model object and artifact loaded.")
@@ -97,7 +88,7 @@ class ModelTrainer:
             logging.info("Preprocessing obj loaded.")
 
             # Check if the model's accuracy meets the expected threshold
-            if accuracy_score(train_arr[:, -1], trained_model.predict(train_arr[:, :-1])) < self.model_trainer_config.expected_accuracy:
+            if mean_absolute_error(train_arr.iloc[:, -1], trained_model.predict(train_arr.iloc[:, :-1])) > self.model_trainer_config.expected_MAE:
                 logging.info("No model found with score above the base score")
                 raise Exception("No model found with score above the base score")
 

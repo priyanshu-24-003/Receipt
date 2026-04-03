@@ -27,7 +27,7 @@ class DataTransformationArtifact:
 
 @dataclass
 class ClassificationMetricArtifact:
-    r2_score: float
+    mean_absolute_error : float
     
 @dataclass
 class ModelTrainerArtifact:
