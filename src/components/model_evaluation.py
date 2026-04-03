@@ -32,25 +32,25 @@ class ModelEvaluation:
         except Exception as e:
             raise MyException(e, sys) from e
 
-    def get_best_model(self) -> Optional[Proj1Estimator]:
-        """
-        Method Name :   get_best_model
-        Description :   This function is used to get model from production stage.
+    # def get_best_model(self) -> Optional[Proj1Estimator]:
+    #     """
+    #     Method Name :   get_best_model
+    #     Description :   This function is used to get model from production stage.
         
-        Output      :   Returns model object if available in s3 storage
-        On Failure  :   Write an exception log and then raise an exception
-        """
-        try:
-            bucket_name = self.model_eval_config.bucket_name
-            model_path=self.model_eval_config.s3_model_key_path
-            proj1_estimator = Proj1Estimator(bucket_name=bucket_name,
-                                               model_path=model_path)
+    #     Output      :   Returns model object if available in s3 storage
+    #     On Failure  :   Write an exception log and then raise an exception
+    #     """
+    #     try:
+    #         bucket_name = self.model_eval_config.bucket_name
+    #         model_path=self.model_eval_config.s3_model_key_path
+    #         proj1_estimator = Proj1Estimator(bucket_name=bucket_name,
+    #                                            model_path=model_path)
 
-            if proj1_estimator.is_model_present(model_path=model_path):
-                return proj1_estimator
-            return None
-        except Exception as e:
-            raise  MyException(e,sys)
+    #         if proj1_estimator.is_model_present(model_path=model_path):
+    #             return proj1_estimator
+    #         return None
+    #     except Exception as e:
+    #         raise  MyException(e,sys)
 
     def get_best_model_LIKE(self) -> Optional[Proj1EstimatorLike]:
         """

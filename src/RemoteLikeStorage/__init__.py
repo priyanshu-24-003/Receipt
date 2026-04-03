@@ -47,9 +47,9 @@ class Proj1EstimatorLike():
          
         return load_object(self.remote_model_path) if self.does_model_exist() else None
 
-    def Push_model(self):
+    def Push_model(self, obj):
         
-        save_object(file_path=self.remote_model_path)
+        save_object(file_path=self.remote_model_path, obj=obj)
 
     
     
