@@ -73,3 +73,12 @@ class ModelPusherConfig:
     bucket_name: str = MODEL_BUCKET_NAME
     s3_model_key_path: str = MODEL_FILE_NAME
 
+
+
+# -------prediction_pipeline_component---------------
+@dataclass
+class VehiclePredictorConfig(ModelEvaluationConfig):
+    model_file_path: str = MODEL_FILE_NAME
+    model_bucket_name: str = MODEL_BUCKET_NAME
+    
+    #used Inheritance here so we can use Remote_Like_Model_Path from earlier without writing it(sometimes them) again
