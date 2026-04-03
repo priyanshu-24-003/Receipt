@@ -28,7 +28,6 @@ Remote_Like_Dir_path = "./RemoteLike"
 
 
 
-
 """
 Data Ingestion related constant start with DATA_INGESTION VAR NAME
 """
@@ -73,6 +72,19 @@ MODEL_TRAINER_MIN_SAMPLES_LEAF: int = 6
 MIN_SAMPLES_SPLIT_MAX_DEPTH: int = 10
 MIN_SAMPLES_SPLIT_RANDOM_STATE: int = 101
 
+
+"""
+MODEL Evaluation related constants
+"""
+MODEL_EVALUATION_CHANGED_THRESHOLD_SCORE: float = 0.02
+MODEL_BUCKET_NAME = "learn-pro1-bucket-mlops"
+MODEL_PUSHER_S3_KEY = "model-registry"
+
+Remote_Like_Model_Folder = "awslike"
+Remote_Like_Model_Name = "best.pkl"
+
+APP_HOST = "0.0.0.0"
+APP_PORT = 5000
 
 
 
