@@ -62,7 +62,8 @@ class ModelEvaluation:
         """
         try:
             best = Proj1EstimatorLike(remote_model_path=self.model_eval_config.Remote_Like_Model_Path)
-            return best.Retreive_model()
+            model_remote = best.Retreive_model()
+            return model_remote
         except Exception as e:
             raise  MyException(e,sys)
   
@@ -79,9 +80,7 @@ class ModelEvaluation:
             test_df = pd.read_csv(self.data_ingestion_artifact.test_file_path)
             x, y = test_df.drop(TARGET_COLUMN, axis=1), test_df[TARGET_COLUMN]
 
-            processor = load_object(file_path=self.data_transform_config.transformed_object_file_path)
-            X = pd.DataFrame(processor.transform(x))
-            
+ 
             logging.info("Test data loaded and now transforming it for prediction...")
 
             #retrieving model of the development stage
@@ -93,11 +92,11 @@ class ModelEvaluation:
             best_model_MAE =None
             best_model = self.get_best_model_LIKE()
             if best_model is not None:
-                logging.info(f"Computing F1_Score for production model..")
-                y_hat_best_model = best_model.predict(X)
+                logging.info(f"Computing MAE for production model..")
+                y_hat_best_model = best_model.predict(x)
                 best_model_MAE = mean_absolute_error(y, y_hat_best_model)
                 logging.info(f"F1_Score-Production Model: {best_model_MAE}, F1_Score-New Trained Model: {trained_model_MAE}")
-            
+
             tmp_best_model_score = 400000 if best_model_MAE is None else best_model_MAE
             result = EvaluateModelResponse(trained_model_MAE_Score=trained_model_MAE,
                                            best_model_MAE_Score=best_model_MAE,
@@ -124,7 +123,6 @@ class ModelEvaluation:
             evaluate_model_response = self.evaluate_model()
             # s3_model_path = self.model_eval_config.s3_model_key_path
             s3_model_path = self.model_eval_config.Remote_Like_Model_Path
-
             model_evaluation_artifact = ModelEvaluationArtifact(
                 is_model_accepted=evaluate_model_response.is_model_accepted,
                 s3_model_path=s3_model_path,

@@ -7,7 +7,7 @@ from src.entity.artifact_entity import ModelPusherArtifact, ModelEvaluationArtif
 from src.entity.config_entity import ModelPusherConfig
 # from src.entity.s3_estimator import Proj1Estimator
 from src.RemoteLikeStorage import Proj1EstimatorLike
-
+from src.utils.main_utils import load_object
 
 class ModelPusher:
     def __init__(self, model_evaluation_artifact: ModelEvaluationArtifact,
@@ -41,7 +41,7 @@ class ModelPusher:
             logging.info("Uploading new model to S3 bucket....")
             # self.proj1_estimator.save_model(from_file=self.model_evaluation_artifact.trained_model_path)
             
-            self.proj1_estimator_like.Push_model(self.model_evaluation_artifact.trained_model_path)
+            self.proj1_estimator_like.Push_model(load_object(self.model_evaluation_artifact.trained_model_path))
             model_pusher_artifact = ModelPusherArtifact(bucket_name=self.model_pusher_config.bucket_name,
                                                         s3_model_path=self.model_pusher_config.s3_model_key_path, RemoteLikeModel=self.model_evaluation_artifact.s3_model_path)
 
