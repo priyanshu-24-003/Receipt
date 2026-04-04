@@ -35,15 +35,13 @@ class MyModel:
 
             #step 1: feature Transformation using saved processor/transformer pipeline
             #after transformed converted the data into dataframe with columns name = model's columns name (it was trained so)
-
             X = pd.DataFrame(self.preprocessing_object.transform(dataframe),columns=self.trained_model_object.feature_names_in_)
-
             logging.info("Starting prediction process.")
 
             # Step 2: Perform prediction using the trained model
             logging.info("Using the trained model to get predictions")
             predictions = self.trained_model_object.predict(X)
-
+            
             return predictions
 
         except Exception as e:

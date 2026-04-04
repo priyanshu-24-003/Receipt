@@ -98,6 +98,7 @@ class ModelEvaluation:
                 logging.info(f"F1_Score-Production Model: {best_model_MAE}, F1_Score-New Trained Model: {trained_model_MAE}")
 
             tmp_best_model_score = 400000 if best_model_MAE is None else best_model_MAE
+
             result = EvaluateModelResponse(trained_model_MAE_Score=trained_model_MAE,
                                            best_model_MAE_Score=best_model_MAE,
                                            is_model_accepted= trained_model_MAE < tmp_best_model_score,
