@@ -5,6 +5,11 @@ template.py
 Rough_Work
 artifact
 
+#***********credential File
+Credentials.txt
+
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]

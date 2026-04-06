@@ -22,6 +22,10 @@ class DataIngestionConfig:
     testing_file_path: str = os.path.join(data_ingestion_dir, DATA_INGESTION_INGESTED_DIR, TEST_FILE_NAME)
     train_test_split_ratio: float = DATA_INGESTION_TRAIN_TEST_SPLIT_RATIO
     collection_name:str = DATA_INGESTION_COLLECTION_NAME
+    database_name:str = DATA_INGESTION_DATABASE_NAME
+    Re_Push_data:str = Re_Push_data
+    
+
     #For RemoteLike Behaviour
     Remote_DB_Name = Remote_Like_DB_Name
     Remote_Dir_path_Ingestion = os.path.join(Remote_Like_Dir_path, Remote_Like_Dir_path_Ingestion)

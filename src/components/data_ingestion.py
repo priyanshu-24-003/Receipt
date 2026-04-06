@@ -1,14 +1,14 @@
 import os
 import sys
-
-from pandas import DataFrame
+from pandas import DataFrame, read_csv
 from sklearn.model_selection import train_test_split
 
 from src.entity.config_entity import DataIngestionConfig
 from src.entity.artifact_entity import DataIngestionArtifact
 from src.exception import MyException
 from src.logger import logging
-from src.RemoteLikeStorage import RemoteStorage
+# from src.RemoteLikeStorage import RemoteStorage 
+from src.data_access.proj1_data import Proj1Data
 
 class DataIngestion:
     def __init__(self,data_ingestion_config:DataIngestionConfig=DataIngestionConfig()):
@@ -30,6 +30,33 @@ class DataIngestion:
         logging.info("Data Retrival Finished from RemoteLike Storage")
         
         return df
+    
+    def Export_Data(self,)-> DataFrame:
+        """
+        Takes help of Proj1Data class and returns data from mongodb atlas
+        
+        #also a Minimal example of Recursion Functions
+        """
+
+        storage = Proj1Data(self.data_ingestion_config.database_name)
+        
+        df = storage.Import_collection_as_dataframe(self.data_ingestion_config.collection_name, self.data_ingestion_config.database_name)
+        
+        if len(df) == 0:
+            r = input("No data Found do you want to Repush the data to mongodb atlas (works only if you have mongodb_cluster configured ) (y/n): ")
+            if r == 'y':
+                data = read_csv(self.data_ingestion_config.Re_Push_data)
+                storage.Export_collection_as_dataframe(data, self.data_ingestion_config.collection_name)
+                return self.Export_Data() # Recursive entity
+            else:
+                raise MyException("No Collection found", sys)
+                return None
+            pass
+        
+        #df without _id column
+        df.drop(df.columns[0], axis=1, inplace=True)
+        return df
+
 
 
     def split_data_as_train_test(self,dataframe: DataFrame) ->None:
@@ -70,7 +97,9 @@ class DataIngestion:
         logging.info("Entered initiate_data_ingestion method of Data_Ingestion class")
 
         try:
-            dataframe = self.export_data()
+            # dataframe = self.export_data() # to export data from RemoteLike local storage
+            dataframe = self.Export_Data()
+
             logging.info("Got the data from Remote Storage (MongoDB or MongoLike)")
 
             self.split_data_as_train_test(dataframe)

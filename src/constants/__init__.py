@@ -2,6 +2,11 @@ import os
 from datetime import date
 
 
+DATABASE_NAME = "ReceiptDataBase"
+COLLECTION_NAME = "ReceiptCollectionName"
+MONGODB_URL_KEY = "MONGODB_URL" # Replaced by environment variable $env:MONGODB_URL
+
+
 PIPELINE_NAME: str = ""
 ARTIFACT_DIR: str = "artifact"
 
@@ -31,11 +36,14 @@ Remote_Like_Dir_path = "./RemoteLike"
 """
 Data Ingestion related constant start with DATA_INGESTION VAR NAME
 """
-DATA_INGESTION_COLLECTION_NAME: str = "Proj1-Data"
+DATA_INGESTION_DATABASE_NAME = DATABASE_NAME
+DATA_INGESTION_COLLECTION_NAME: str = COLLECTION_NAME
 DATA_INGESTION_DIR_NAME: str = "data_ingestion"
 DATA_INGESTION_FEATURE_STORE_DIR: str = "feature_store"
 DATA_INGESTION_INGESTED_DIR: str = "ingested"
 DATA_INGESTION_TRAIN_TEST_SPLIT_RATIO: float = 0.2
+
+Re_Push_data = './Experiments/src_data/insurance.csv'
 Remote_Like_Dir_path_Ingestion = "mongolike"
 
 
