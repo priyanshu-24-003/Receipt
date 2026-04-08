@@ -35,6 +35,7 @@ class MyModel:
 
             #step 1: feature Transformation using saved processor/transformer pipeline
             #after transformed converted the data into dataframe with columns name = model's columns name (it was trained so)
+
             X = pd.DataFrame(self.preprocessing_object.transform(dataframe),columns=self.trained_model_object.feature_names_in_)
             logging.info("Starting prediction process.")
 

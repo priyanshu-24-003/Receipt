@@ -8,8 +8,8 @@ from src.utils.main_utils import load_object
 import sys
 import pandas as pd
 from typing import Optional
-# from src.entity.s3_estimator import Proj1Estimator
-from src.RemoteLikeStorage import Proj1EstimatorLike
+from src.entity.s3_estimator import Proj1Estimator
+# from src.RemoteLikeStorage import Proj1EstimatorLike
 from dataclasses import dataclass
 
 @dataclass
@@ -32,40 +32,41 @@ class ModelEvaluation:
         except Exception as e:
             raise MyException(e, sys) from e
 
-    # def get_best_model(self) -> Optional[Proj1Estimator]:
-    #     """
-    #     Method Name :   get_best_model
-    #     Description :   This function is used to get model from production stage.
-        
-    #     Output      :   Returns model object if available in s3 storage
-    #     On Failure  :   Write an exception log and then raise an exception
-    #     """
-    #     try:
-    #         bucket_name = self.model_eval_config.bucket_name
-    #         model_path=self.model_eval_config.s3_model_key_path
-    #         proj1_estimator = Proj1Estimator(bucket_name=bucket_name,
-    #                                            model_path=model_path)
-
-    #         if proj1_estimator.is_model_present(model_path=model_path):
-    #             return proj1_estimator
-    #         return None
-    #     except Exception as e:
-    #         raise  MyException(e,sys)
-
-    def get_best_model_LIKE(self) -> Optional[Proj1EstimatorLike]:
+    def get_best_model(self) -> Optional[Proj1Estimator]:
         """
         Method Name :   get_best_model
-        Description :   This function is used to get model from RemoteLike production stage.
+        Description :   This function is used to get model from production stage.
         
         Output      :   Returns model object if available in s3 storage
         On Failure  :   Write an exception log and then raise an exception
         """
         try:
-            best = Proj1EstimatorLike(remote_model_path=self.model_eval_config.Remote_Like_Model_Path)
-            model_remote = best.Retreive_model()
-            return model_remote
+            bucket_name = self.model_eval_config.bucket_name
+            model_path=self.model_eval_config.s3_model_key_path
+            print(model_path, bucket_name, 's3 related')
+            proj1_estimator = Proj1Estimator(bucket_name=bucket_name,
+                                               model_path=model_path)
+
+            if proj1_estimator.is_model_present(model_path=model_path):
+                return proj1_estimator
+            return None
         except Exception as e:
             raise  MyException(e,sys)
+
+    # def get_best_model_LIKE(self) -> Optional[Proj1EstimatorLike]:
+    #     """
+    #     Method Name :   get_best_model
+    #     Description :   This function is used to get model from RemoteLike production stage.
+        
+    #     Output      :   Returns model object if available in s3 storage
+    #     On Failure  :   Write an exception log and then raise an exception
+    #     """
+    #     try:
+    #         best = Proj1EstimatorLike(remote_model_path=self.model_eval_config.Remote_Like_Model_Path)
+    #         model_remote = best.Retreive_model()
+    #         return model_remote
+    #     except Exception as e:
+    #         raise  MyException(e,sys)
   
     def evaluate_model(self) -> EvaluateModelResponse:
         """
@@ -90,7 +91,7 @@ class ModelEvaluation:
             logging.info(f"Mean Absolute Error for this model: {trained_model_MAE}")
 
             best_model_MAE =None
-            best_model = self.get_best_model_LIKE()
+            best_model = self.get_best_model()
             if best_model is not None:
                 logging.info(f"Computing MAE for production model..")
                 y_hat_best_model = best_model.predict(x)
@@ -122,8 +123,9 @@ class ModelEvaluation:
             print("------------------------------------------------------------------------------------------------")
             logging.info("Initialized Model Evaluation Component.")
             evaluate_model_response = self.evaluate_model()
-            # s3_model_path = self.model_eval_config.s3_model_key_path
-            s3_model_path = self.model_eval_config.Remote_Like_Model_Path
+            s3_model_path = self.model_eval_config.s3_model_key_path
+            print(s3_model_path, 's3 related')
+            # s3_model_path = self.model_eval_config.Remote_Like_Model_Path # for RemoteLike Local storage class without AWS
             model_evaluation_artifact = ModelEvaluationArtifact(
                 is_model_accepted=evaluate_model_response.is_model_accepted,
                 s3_model_path=s3_model_path,

@@ -7,10 +7,10 @@ COLLECTION_NAME = "ReceiptCollectionName"
 MONGODB_URL_KEY = "MONGODB_URL" # Replaced by environment variable $env:MONGODB_URL
 
 
+
 PIPELINE_NAME: str = ""
 ARTIFACT_DIR: str = "artifact"
 
-MODEL_FILE_NAME = "model.pkl"
 
 TARGET_COLUMN = "charges"
 CURRENT_YEAR = date.today().year
@@ -84,9 +84,10 @@ MIN_SAMPLES_SPLIT_RANDOM_STATE: int = 101
 """
 MODEL Evaluation related constants
 """
-MODEL_EVALUATION_CHANGED_THRESHOLD_SCORE: float = 0.02
-MODEL_BUCKET_NAME = "learn-pro1-bucket-mlops"
+MODEL_EVALUATION_CHANGED_THRESHOLD_SCORE: float = 200
+MODEL_BUCKET_NAME = "receipt-s3-bucket-proj"
 MODEL_PUSHER_S3_KEY = "model-registry"
+MODEL_FILE_NAME = "model.pkl"
 
 Remote_Like_Model_Folder = "awslike"
 Remote_Like_Model_Name = "best.pkl"
@@ -94,6 +95,8 @@ Remote_Like_Model_Name = "best.pkl"
 APP_HOST = "0.0.0.0"
 APP_PORT = 5000
 
-
+AWS_ACCESS_KEY_ID_ENV_KEY = "AWS_ACCESS_KEY_ID"
+AWS_SECRET_ACCESS_KEY_ENV_KEY = "AWS_SECRET_ACCESS_KEY"
+REGION_NAME = "us-east-1"
 
 

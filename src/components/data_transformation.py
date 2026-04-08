@@ -104,10 +104,10 @@ class DataTransformation:
 
             logging.info("Initializing transformation for Training-data")
             input_feature_train_arr = preprocessor.fit_transform(input_feature_train_df)
+            
             logging.info("Initializing transformation for Testing-data")
             input_feature_test_arr = preprocessor.transform(input_feature_test_df)
             logging.info("Transformation done end to end to train-test df.")
-
 
             #Concatinating Feature_Label to form numpy array as final data for model to be trained on.
 
