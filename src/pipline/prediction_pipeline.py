@@ -1,9 +1,9 @@
 import sys
 from src.entity.config_entity import VehiclePredictorConfig
-# from src.entity.s3_estimator import Proj1Estimator
+from src.entity.s3_estimator import Proj1Estimator
 
 from src.utils.main_utils import load_object
-from src.RemoteLikeStorage import Proj1EstimatorLike
+# from src.RemoteLikeStorage import Proj1EstimatorLike
 
 from src.exception import MyException
 from src.logger import logging
@@ -67,12 +67,13 @@ class VehicleDataClassifier:
         """
         try:
             logging.info("Entered predict method of VehicleDataClassifier class")
-            # model = Proj1EstimatorLike(remote_model_path=self.prediction_pipeline_config.Remote_Like_Model_Path)
-            # result =  model.predict(dataframe)
+            print(self.prediction_pipeline_config.model_bucket_name, self.prediction_pipeline_config.model_file_path)
+            model = Proj1Estimator(self.prediction_pipeline_config.model_bucket_name, self.prediction_pipeline_config.model_file_path)
+            result =  model.predict(self.dataframe)
 
-            #loading the processor
-            model = load_object(file_path=self.prediction_pipeline_config.Remote_Like_Model_Path)
-            result = model.predict(self.dataframe,)#  'here is my df recieved from GUI/user'
+            #loading the processor/model #  for RemoteLike Local storage class without AWS
+            # model = load_object(file_path=self.prediction_pipeline_config.Remote_Like_Model_Path)
+            # result = model.predict(self.dataframe,)#  'here is my df recieved from GUI/user'
             
             return result
         
