@@ -114,8 +114,7 @@ async def predictRouteClient(request: Request):
         model_predictor = VehicleDataClassifier(vehicle_df)
         # Make a prediction and retrieve the result
         value = model_predictor.predict()[0]
-        # Interpret the prediction result as 'Response-Yes' or 'Response-No'
-        # Render the same HTML page with the prediction result
+
         return templates.TemplateResponse(name="insurancedata.html",request=request,context={"context": value})
     
         
