@@ -8,7 +8,7 @@ artifact
 #***********credential File
 Credentials.txt
 receipt-user_accessKeys.csv
-
+receipt-ec2-key-pair.pem
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
