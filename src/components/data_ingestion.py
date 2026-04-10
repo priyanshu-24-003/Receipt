@@ -20,16 +20,16 @@ class DataIngestion:
         except Exception as e:
             raise MyException(e,sys)
         
-    def export_data(self,)->DataFrame:
-        logging.info("data Collection started from RemoteLike Storage")
+    # def export_data(self,)->DataFrame:
+    #     logging.info("data Collection started from RemoteLike Storage")
         
-        storage = RemoteStorage(self.data_ingestion_config.Remote_Dir_path_Ingestion)
+    #     storage = RemoteStorage(self.data_ingestion_config.Remote_Dir_path_Ingestion)
         
-        df = storage.Retrieve_Data(self.data_ingestion_config.Remote_DB_Name)
+    #     df = storage.Retrieve_Data(self.data_ingestion_config.Remote_DB_Name)
         
-        logging.info("Data Retrival Finished from RemoteLike Storage")
+    #     logging.info("Data Retrival Finished from RemoteLike Storage")
         
-        return df
+    #     return df
     
     def Export_Data(self,)-> DataFrame:
         """
