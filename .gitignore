@@ -7,6 +7,11 @@ artifact
 Learnings
 
 
+#stop tracking all the .dio files (chart files)
+*.dio
+
+receiptenv
+
 #***********credential File
 Credentials.txt
 receipt-user_accessKeys.csv

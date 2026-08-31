@@ -18,6 +18,13 @@ class TargetValueMapping:
         return dict(zip(mapping_response.values(),mapping_response.keys()))
 
 class MyModel:
+
+    """
+    
+    This Class packages the Pipeline Transformer object and Trained model into on MyModel Object
+    If there comes a new test_data MyModel can be used to both Transform the data and predict.
+
+    """
     def __init__(self, preprocessing_object: Pipeline, trained_model_object: object):
         """
         :param preprocessing_object: Input Object of preprocesser

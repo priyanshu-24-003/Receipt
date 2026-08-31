@@ -26,13 +26,13 @@ class DataTransformationArtifact:
 
 
 @dataclass
-class ClassificationMetricArtifact:
+class RegressionMetricArtifact:
     mean_absolute_error : float
     
 @dataclass
 class ModelTrainerArtifact:
     trained_model_file_path:str 
-    metric_artifact:ClassificationMetricArtifact
+    metric_artifact:RegressionMetricArtifact
 
 
 

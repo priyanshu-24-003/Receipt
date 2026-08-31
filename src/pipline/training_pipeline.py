@@ -1,5 +1,8 @@
 import sys
 from src.exception import MyException
+import time
+
+
 from src.logger import logging
 
 from src.components.data_ingestion import DataIngestion
@@ -27,6 +30,7 @@ from src.entity.artifact_entity import (DataIngestionArtifact,
 
 class TrainPipeline:
     def __init__(self):
+
         self.data_ingestion_config = DataIngestionConfig()
         self.data_validation_config = DataValidationConfig()
         self.data_transformation_config = DataTransformationConfig()
@@ -104,7 +108,6 @@ class TrainPipeline:
         """
         try:
             model_evaluation = ModelEvaluation(model_eval_config=self.model_evaluation_config,
-                                               Data_transform_config=self.data_transformation_config,
                                                data_ingestion_artifact=data_ingestion_artifact,
                                                model_trainer_artifact=model_trainer_artifact)
             model_evaluation_artifact = model_evaluation.initiate_model_evaluation()
@@ -129,6 +132,7 @@ class TrainPipeline:
         """
         This method of TrainPipeline class is responsible for running complete pipeline
         """
+        
         try:
             data_ingestion_artifact = self.start_data_ingestion()
 
@@ -147,3 +151,11 @@ class TrainPipeline:
             
         except Exception as e:
             raise MyException(e, sys)
+
+
+if __name__ == "__main__":
+    try:
+        train_pipeline = TrainPipeline()
+        train_pipeline.run_pipeline()
+    except Exception as e:
+        raise MyException(e, sys) from e

@@ -81,7 +81,7 @@ class ModelPusherConfig:
 
 # -------prediction_pipeline_component---------------
 @dataclass
-class VehiclePredictorConfig(ModelEvaluationConfig):
+class PremiumPredictorConfig(ModelEvaluationConfig):
     model_file_path: str = MODEL_FILE_NAME
     model_bucket_name: str = MODEL_BUCKET_NAME
     

@@ -7,6 +7,8 @@ from src.utils.main_utils import load_object, save_object
 class RemoteStorage():
     """
     A Class to Retrieve data From RemoteLike LocalStorage
+
+    Gets used in Data Ingestion component.
     """
 
     def __init__(self, path:str):
@@ -28,6 +30,8 @@ class Proj1EstimatorLike():
 
     """
     A class to save & retrieve model from awslike storage
+
+    Gets used in Model Evaluation and Model Pusher components
     """
 
     def __init__(self, remote_model_path):

@@ -10,7 +10,7 @@ from typing import Optional
 
 # Importing constants and pipeline modules from the project
 from src.constants import APP_HOST, APP_PORT
-from src.pipline.prediction_pipeline import VehicleData, VehicleDataClassifier
+from src.pipline.prediction_pipeline import VehicleData, VehicleDataReggressor
 from src.pipline.training_pipeline import TrainPipeline
 
 # Initialize FastAPI application
@@ -111,7 +111,7 @@ async def predictRouteClient(request: Request):
         vehicle_df = vehicle_data.get_vehicle_input_data_frame()
 
         # Initialize the prediction pipeline
-        model_predictor = VehicleDataClassifier(vehicle_df)
+        model_predictor = VehicleDataReggressor(vehicle_df)
         # Make a prediction and retrieve the result
         value = model_predictor.predict()[0]
 

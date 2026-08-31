@@ -5,13 +5,14 @@ from src.constants import AWS_SECRET_ACCESS_KEY_ENV_KEY, AWS_ACCESS_KEY_ID_ENV_K
 
 class S3Client:
 
+    """ 
+    This Class gets aws credentials from env_variable and creates an connection with s3 bucket 
+    and raises exception when environment variable is not set
+    """
+
     s3_client=None
     s3_resource = None
     def __init__(self, region_name=REGION_NAME):
-        """ 
-        This Class gets aws credentials from env_variable and creates an connection with s3 bucket 
-        and raise exception when environment variable is not set
-        """
 
         if S3Client.s3_resource==None or S3Client.s3_client==None:
             __access_key_id = os.getenv(AWS_ACCESS_KEY_ID_ENV_KEY, )
@@ -20,12 +21,16 @@ class S3Client:
                 raise Exception(f"Environment variable: {AWS_ACCESS_KEY_ID_ENV_KEY} is not not set.")
             if __secret_access_key is None:
                 raise Exception(f"Environment variable: {AWS_SECRET_ACCESS_KEY_ENV_KEY} is not set.")
-        
+
+
+            # resource get the object oriented mapping to direct bucket, its object etc, but limited to few services
             S3Client.s3_resource = boto3.resource('s3',
                                             aws_access_key_id=__access_key_id,
                                             aws_secret_access_key=__secret_access_key,
                                             region_name=region_name
                                             )
+
+            # Client is can access  any service , yet requirest more data from user to access , responses in dict format.
             S3Client.s3_client = boto3.client('s3',
                                         aws_access_key_id=__access_key_id,
                                         aws_secret_access_key=__secret_access_key,

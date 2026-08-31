@@ -1,9 +1,10 @@
 import sys
-from src.entity.config_entity import VehiclePredictorConfig
-from src.entity.s3_estimator import Proj1Estimator
+from src.entity.config_entity import PremiumPredictorConfig
+# from src.entity.s3_estimator import Proj1Estimator
+from src.cloud_storage.aws_storage import SimpleStorageService
 
 from src.utils.main_utils import load_object
-# from src.RemoteLikeStorage import Proj1EstimatorLike
+from src.RemoteLikeStorage import Proj1EstimatorLike
 
 from src.exception import MyException
 from src.logger import logging
@@ -49,8 +50,8 @@ class VehicleData:
             raise MyException(e, sys) from e
 
 
-class VehicleDataClassifier:
-    def __init__(self, Dataframe:DataFrame, prediction_pipeline_config: VehiclePredictorConfig = VehiclePredictorConfig(),) -> None:
+class VehicleDataReggressor:
+    def __init__(self, Dataframe:DataFrame, prediction_pipeline_config: PremiumPredictorConfig = PremiumPredictorConfig(),) -> None:
         """
         :param prediction_pipeline_config: Configuration for prediction the value
         """
@@ -66,14 +67,18 @@ class VehicleDataClassifier:
         Returns: Prediction in string format
         """
         try:
-            logging.info("Entered predict method of VehicleDataClassifier class")
-            print(self.prediction_pipeline_config.model_bucket_name, self.prediction_pipeline_config.model_file_path)
-            model = Proj1Estimator(self.prediction_pipeline_config.model_bucket_name, self.prediction_pipeline_config.model_file_path)
-            result =  model.predict(self.dataframe)
 
-            #loading the processor/model #  for RemoteLike Local storage class without AWS
-            # model = load_object(file_path=self.prediction_pipeline_config.Remote_Like_Model_Path)
-            # result = model.predict(self.dataframe,)#  'here is my df recieved from GUI/user'
+            #Production setup
+            # logging.info("Entered predict method of VehicleDataClassifier class")
+            # print(self.prediction_pipeline_config.model_bucket_name, self.prediction_pipeline_config.model_file_path)
+            # model = SimpleStorageService(self.prediction_pipeline_config.model_bucket_name, self.prediction_pipeline_config.model_file_path)
+            # result =  model.predict(self.dataframe)
+
+
+            # local setup
+            # loading the processor/model #  for RemoteLike Local storage class without AWS
+            model = load_object(file_path=self.prediction_pipeline_config.Remote_Like_Model_Path)
+            result = model.predict(self.dataframe,)#  'here is my df recieved from GUI/user'
             
             return result
         

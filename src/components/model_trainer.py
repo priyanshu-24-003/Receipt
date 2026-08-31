@@ -6,9 +6,9 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error
 from src.exception import MyException
 from src.logger import logging
-from src.utils.main_utils import load_numpy_array_data, load_object, save_object, load_dataframe_artifact
+from src.utils.main_utils import load_object, save_object, load_dataframe_artifact
 from src.entity.config_entity import ModelTrainerConfig
-from src.entity.artifact_entity import DataTransformationArtifact, ModelTrainerArtifact, ClassificationMetricArtifact
+from src.entity.artifact_entity import DataTransformationArtifact, ModelTrainerArtifact, RegressionMetricArtifact
 from src.entity.estimator import MyModel
 
 class ModelTrainer:
@@ -56,7 +56,7 @@ class ModelTrainer:
             logging.info(f"MAE on the test dataset by the Currently trained model {MAE}")
             
             # Creating metric artifact
-            metric_artifact = ClassificationMetricArtifact(mean_absolute_error=MAE)
+            metric_artifact = RegressionMetricArtifact(mean_absolute_error=MAE)
             return model, metric_artifact
         
         except Exception as e:

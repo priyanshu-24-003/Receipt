@@ -1,6 +1,7 @@
 artifact
 venv
 env
+receiptenv
 .gitignore
 logs
 template.py
@@ -16,3 +17,5 @@ learning_flow.txt
 Credentials.txt
 receipt-ec2-key-pair.pem
 Learnings
+*.dio
+.github

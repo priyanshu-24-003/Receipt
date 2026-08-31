@@ -5,8 +5,9 @@ from src.exception import MyException
 from src.logger import logging
 from src.entity.artifact_entity import ModelPusherArtifact, ModelEvaluationArtifact
 from src.entity.config_entity import ModelPusherConfig
-from src.entity.s3_estimator import Proj1Estimator
-# from src.RemoteLikeStorage import Proj1EstimatorLike
+# from src.entity.s3_estimator import Proj1Estimator
+from src.cloud_storage.aws_storage import SimpleStorageService
+from src.RemoteLikeStorage import Proj1EstimatorLike
 from src.utils.main_utils import load_object
 
 class ModelPusher:
@@ -16,12 +17,15 @@ class ModelPusher:
         :param model_evaluation_artifact: Output reference of data evaluation artifact stage
         :param model_pusher_config: Configuration for model pusher
         """
-        self.s3 = SimpleStorageService()
         self.model_evaluation_artifact = model_evaluation_artifact
         self.model_pusher_config = model_pusher_config
-        self.proj1_estimator = Proj1Estimator(bucket_name=model_pusher_config.bucket_name,
-                                model_path=model_pusher_config.s3_model_key_path)
-        # self.proj1_estimator_like = Proj1EstimatorLike(self.model_evaluation_artifact.s3_model_path) #  for RemoteLike Local storage class without AWS
+
+
+        # self.s3 = SimpleStorageService()
+        # self.proj1_estimator = SimpleStorageService(bucket_name=model_pusher_config.bucket_name,
+                                # model_path=model_pusher_config.s3_model_key_path)
+
+        self.proj1_estimator_like = Proj1EstimatorLike(self.model_evaluation_artifact.s3_model_path) #  for RemoteLike Local storage class without AWS
         
 
     def initiate_model_pusher(self) -> ModelPusherArtifact:
@@ -39,9 +43,15 @@ class ModelPusher:
             logging.info("Uploading artifacts folder to s3 bucket")
             
             logging.info("Uploading new model to S3 bucket....")
-            self.proj1_estimator.save_model(from_file=self.model_evaluation_artifact.trained_model_path)
-            
-            # self.proj1_estimator_like.Push_model(load_object(self.model_evaluation_artifact.trained_model_path))
+
+
+            #Production
+            # self.proj1_estimator.save_model(from_file=self.model_evaluation_artifact.trained_model_path)
+
+            #local
+            self.proj1_estimator_like.Push_model(load_object(self.model_evaluation_artifact.trained_model_path))
+
+
             model_pusher_artifact = ModelPusherArtifact(bucket_name=self.model_pusher_config.bucket_name,
                                                         s3_model_path=self.model_pusher_config.s3_model_key_path, RemoteLikeModel=self.model_evaluation_artifact.s3_model_path)
 

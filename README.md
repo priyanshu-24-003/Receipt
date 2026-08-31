@@ -119,3 +119,8 @@
 * Fully functional training & prediction pipeline deployed on cloud
 
 ---
+
+## 🧰 Scope of Improvments
+
+* Feature If enabled Runs the pipeline from any specified point
+* Better Experiment Tracking using MlFlow

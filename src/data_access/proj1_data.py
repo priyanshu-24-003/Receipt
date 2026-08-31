@@ -8,7 +8,7 @@ from src.exception import MyException
 
 class Proj1Data:
     """
-    A class to export MongoDB records as a pandas DataFrame.
+    A class to Import/Export from/to MongoDB Atlas
     """
 
     def __init__(self, database_name:str,) -> None:
@@ -23,19 +23,7 @@ class Proj1Data:
 
     def Import_collection_as_dataframe(self, collection_name: str, database_name: Optional[str] = None) -> pd.DataFrame:
         """
-        Import an entire MongoDB collection as a pandas DataFrame.
-
-        Parameters:
-        ----------
-        collection_name : str
-            The name of the MongoDB collection to export.
-        database_name : Optional[str]
-            Name of the database (optional). Defaults to DATABASE_NAME.
-
-        Returns:
-        -------
-        pd.DataFrame
-            DataFrame containing the collection data, with '_id' column removed and 'na' values replaced with NaN.
+        Import an entire MongoDB collection as a pandas DataFrame from mongodb atlas
         """
         try:
             # Access specified collection from the default or specified database
@@ -60,12 +48,7 @@ class Proj1Data:
     def Export_collection_as_dataframe(self, data:pd.DataFrame, collection_name:str,):
     
         """
-        data : pandas dataframe to be pused as list of dictionary
-        collection_name : Name of the collection where data will(collectino) be pushed.
-        database_name : Name of the Database where data(collection) will be pushed.
-
-        # This Function exports the data(collection) to mongodb atlas 
-
+        pushes a pandas Dataframe to mongodb atlas
         """
                 
         data = data.to_dict(orient="records")
