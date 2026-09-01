@@ -21,11 +21,11 @@ class ModelPusher:
 
 
         #Production setup
-        self.proj1_estimator = SimpleStorageService(bucket_name=model_pusher_config.bucket_name,
-                                model_path=model_pusher_config.s3_model_key_path)
+        # self.proj1_estimator = SimpleStorageService(bucket_name=model_pusher_config.bucket_name,
+        #                         model_path=model_pusher_config.s3_model_key_path)
 
         #local setup
-        # self.proj1_estimator_like = Proj1EstimatorLike(self.model_evaluation_artifact.s3_model_path) #  for RemoteLike Local storage class without AWS
+        self.proj1_estimator_like = Proj1EstimatorLike(self.model_evaluation_artifact.s3_model_path) #  for RemoteLike Local storage class without AWS
         
 
     def initiate_model_pusher(self) -> ModelPusherArtifact:
@@ -45,11 +45,11 @@ class ModelPusher:
             logging.info("Uploading new model to S3 bucket....")
 
 
-            #Production
-            self.proj1_estimator.save_model(from_filename=self.model_evaluation_artifact.trained_model_path)
+            # Production Reference
+            # self.proj1_estimator.save_model(from_filename=self.model_evaluation_artifact.trained_model_path)
 
             #local
-            # self.proj1_estimator_like.Push_model(load_object(self.model_evaluation_artifact.trained_model_path))
+            self.proj1_estimator_like.Push_model(load_object(self.model_evaluation_artifact.trained_model_path))
 
 
             model_pusher_artifact = ModelPusherArtifact(bucket_name=self.model_pusher_config.bucket_name,

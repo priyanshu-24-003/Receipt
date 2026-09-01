@@ -55,17 +55,17 @@ class InsuranceDataRegressor:
         
         try:
 
-            #Production setup
+            # Production setup Reference
             # logging.info("Entered predict method of InsuranceDataRegressor class")
-            model_class = SimpleStorageService(self.prediction_pipeline_config.model_bucket_name, self.prediction_pipeline_config.model_file_path)
-            model = model_class.load_model()
-            result =  model.predict(self.get_insurance_input_data_frame(),)
+            # model_class = SimpleStorageService(self.prediction_pipeline_config.model_bucket_name, self.prediction_pipeline_config.model_file_path)
+            # model = model_class.load_model()
+            # result =  model.predict(self.get_insurance_input_data_frame(),)
 
 
             # local setup
             # logging.info("Entered predict method of InsuranceDataRegressor class")
-            # model = load_object(file_path=self.prediction_pipeline_config.Remote_Like_Model_Path)
-            # result = model.predict(self.df_recieved,)
+            model = load_object(file_path=self.prediction_pipeline_config.Remote_Like_Model_Path)
+            result = model.predict(self.df_recieved,)
 
 
             return result

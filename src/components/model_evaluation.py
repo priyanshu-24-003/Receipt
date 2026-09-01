@@ -8,7 +8,6 @@ from src.utils.main_utils import load_object
 import sys
 import pandas as pd
 from typing import Optional
-# from src.entity.s3_estimator import Proj1Estimator
 from src.cloud_storage.aws_storage import SimpleStorageService
 from src.RemoteLikeStorage import Proj1EstimatorLike
 from dataclasses import dataclass
@@ -27,7 +26,6 @@ class ModelEvaluation:
                  model_trainer_artifact: ModelTrainerArtifact):
         try:
             self.model_eval_config = model_eval_config
-            # self.data_transform_config = Data_transform_config
             self.data_ingestion_artifact = data_ingestion_artifact
             self.model_trainer_artifact = model_trainer_artifact
         except Exception as e:
@@ -101,10 +99,10 @@ class ModelEvaluation:
             best_model_MAE =None
 
             #Production
-            best_model = self.get_best_model()
+            # best_model = self.get_best_model()
 
             #local setup
-            # best_model = self.get_best_model_LIKE()
+            best_model = self.get_best_model_LIKE()
 
             if best_model is not None:
                 logging.info(f"Computing MAE for production model..")
@@ -140,10 +138,10 @@ class ModelEvaluation:
 
 
             #Production setup 
-            s3_model_path = self.model_eval_config.s3_model_key_path
+            # s3_model_path = self.model_eval_config.s3_model_key_path
 
             #local setup
-            # s3_model_path = self.model_eval_config.Remote_Like_Model_Path # for RemoteLike Local storage class without AWS
+            s3_model_path = self.model_eval_config.Remote_Like_Model_Path # for RemoteLike Local storage class without AWS
 
             model_evaluation_artifact = ModelEvaluationArtifact(
                 is_model_accepted=evaluate_model_response.is_model_accepted,
