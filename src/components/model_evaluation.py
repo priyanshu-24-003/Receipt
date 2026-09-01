@@ -8,9 +8,7 @@ from src.utils.main_utils import load_object
 import sys
 import pandas as pd
 from typing import Optional
-# from src.entity.s3_estimator import Proj1Estimator
 from src.cloud_storage.aws_storage import SimpleStorageService
-from src.RemoteLikeStorage import Proj1EstimatorLike
 from dataclasses import dataclass
 
 @dataclass
@@ -27,7 +25,6 @@ class ModelEvaluation:
                  model_trainer_artifact: ModelTrainerArtifact):
         try:
             self.model_eval_config = model_eval_config
-            # self.data_transform_config = Data_transform_config
             self.data_ingestion_artifact = data_ingestion_artifact
             self.model_trainer_artifact = model_trainer_artifact
         except Exception as e:
@@ -56,24 +53,6 @@ class ModelEvaluation:
         except Exception as e:
             raise  MyException(e,sys)
 
-
-
-
-    # TO fetch from local.
-    def get_best_model_LIKE(self) -> Optional[Proj1EstimatorLike]:
-        """
-        Method Name :   get_best_model
-        Description :   This function is used to get model from RemoteLike production stage.
-        
-        Output      :   Returns model object if available in s3 storage
-        On Failure  :   Write an exception log and then raise an exception
-        """
-        try:
-            best = Proj1EstimatorLike(remote_model_path=self.model_eval_config.Remote_Like_Model_Path)
-            model_remote = best.Retreive_model()
-            return model_remote
-        except Exception as e:
-            raise  MyException(e,sys)
         
   
     def evaluate_model(self) -> EvaluateModelResponse:
@@ -103,9 +82,7 @@ class ModelEvaluation:
             #Production
             best_model = self.get_best_model()
 
-            #local setup
-            # best_model = self.get_best_model_LIKE()
-
+      
             if best_model is not None:
                 logging.info(f"Computing MAE for production model..")
                 y_hat_best_model = best_model.predict(x)
@@ -138,12 +115,8 @@ class ModelEvaluation:
             logging.info("Initialized Model Evaluation Component.")
             evaluate_model_response = self.evaluate_model()
 
-
             #Production setup 
             s3_model_path = self.model_eval_config.s3_model_key_path
-
-            #local setup
-            # s3_model_path = self.model_eval_config.Remote_Like_Model_Path # for RemoteLike Local storage class without AWS
 
             model_evaluation_artifact = ModelEvaluationArtifact(
                 is_model_accepted=evaluate_model_response.is_model_accepted,

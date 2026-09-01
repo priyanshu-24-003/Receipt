@@ -7,7 +7,6 @@ from src.entity.config_entity import DataIngestionConfig
 from src.entity.artifact_entity import DataIngestionArtifact
 from src.exception import MyException
 from src.logger import logging
-from src.RemoteLikeStorage import RemoteStorage 
 from src.data_access.proj1_data import Proj1Data
 
 class DataIngestion:
@@ -20,19 +19,7 @@ class DataIngestion:
         except Exception as e:
             raise MyException(e,sys)
         
-    def export_data(self,)->DataFrame:
-        """
-        This function is  the placeholder function for exporting data from local storage RemoteLike/monogolike/
-        """
-        logging.info("data Collection started from RemoteLike Storage")
-        
-        storage = RemoteStorage(self.data_ingestion_config.Remote_Dir_path_Ingestion)
-        
-        df = storage.Retrieve_Data(self.data_ingestion_config.Remote_DB_Name)
-        
-        logging.info("Data Retrival Finished from RemoteLike Storage")
-        
-        return df
+
     
     def Export_Data(self,)-> DataFrame:
         """
@@ -101,11 +88,8 @@ class DataIngestion:
 
         try:
 
-            #Local storage
-            dataframe = self.export_data() # to export data from RemoteLike local storage
-
             #MongoDb Atlas Storage.
-            # dataframe = self.Export_Data()
+            dataframe = self.Export_Data()
 
             logging.info("Got the data from Remote Storage (MongoDB or MongoLike)")
 

@@ -1,10 +1,8 @@
 import sys
 from src.entity.config_entity import PremiumPredictorConfig
-# from src.entity.s3_estimator import Proj1Estimator
 from src.cloud_storage.aws_storage import SimpleStorageService
 
 from src.utils.main_utils import load_object
-from src.RemoteLikeStorage import Proj1EstimatorLike
 
 from src.exception import MyException
 from src.logger import logging
@@ -60,12 +58,6 @@ class InsuranceDataRegressor:
             model_class = SimpleStorageService(self.prediction_pipeline_config.model_bucket_name, self.prediction_pipeline_config.model_file_path)
             model = model_class.load_model()
             result =  model.predict(self.get_insurance_input_data_frame(),)
-
-
-            # local setup
-            # logging.info("Entered predict method of InsuranceDataRegressor class")
-            # model = load_object(file_path=self.prediction_pipeline_config.Remote_Like_Model_Path)
-            # result = model.predict(self.df_recieved,)
 
 
             return result
