@@ -47,12 +47,11 @@ class ModelEvaluation:
         try:
             bucket_name = self.model_eval_config.bucket_name
             model_path=self.model_eval_config.s3_model_key_path
-            print(model_path, bucket_name, 's3 related')
             proj1_estimator = SimpleStorageService(bucket_name=bucket_name,
                                                    model_path=model_path)
 
-            if proj1_estimator.is_model_present(model_path=model_path):
-                return proj1_estimator
+            if proj1_estimator.is_model_present():
+                return proj1_estimator.load_model()
             return None
         except Exception as e:
             raise  MyException(e,sys)
@@ -102,10 +101,10 @@ class ModelEvaluation:
             best_model_MAE =None
 
             #Production
-            # best_model = self.get_best_model()
+            best_model = self.get_best_model()
 
             #local setup
-            best_model = self.get_best_model_LIKE()
+            # best_model = self.get_best_model_LIKE()
 
             if best_model is not None:
                 logging.info(f"Computing MAE for production model..")
@@ -141,10 +140,10 @@ class ModelEvaluation:
 
 
             #Production setup 
-            # s3_model_path = self.model_eval_config.s3_model_key_path
+            s3_model_path = self.model_eval_config.s3_model_key_path
 
             #local setup
-            s3_model_path = self.model_eval_config.Remote_Like_Model_Path # for RemoteLike Local storage class without AWS
+            # s3_model_path = self.model_eval_config.Remote_Like_Model_Path # for RemoteLike Local storage class without AWS
 
             model_evaluation_artifact = ModelEvaluationArtifact(
                 is_model_accepted=evaluate_model_response.is_model_accepted,

@@ -85,7 +85,7 @@ MIN_SAMPLES_SPLIT_RANDOM_STATE: int = 101
 MODEL Evaluation related constants
 """
 MODEL_EVALUATION_CHANGED_THRESHOLD_SCORE: float = 200
-MODEL_BUCKET_NAME = "receipt-s3-bucket-proj"
+MODEL_BUCKET_NAME = "receipt-s3-bucket-new"
 MODEL_PUSHER_S3_KEY = "model-registry"
 MODEL_FILE_NAME = "model.pkl"
 

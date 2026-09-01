@@ -19,6 +19,8 @@ class SimpleStorageService(MyModel):
     """
     A class for interacting with AWS S3 storage, providing methods for file management, 
     data uploads, and data retrieval in S3 buckets.
+
+    Inherits MyModel to enable prediction.
     """
 
     def __init__(self, bucket_name, model_path):
@@ -104,6 +106,12 @@ class SimpleStorageService(MyModel):
             file_object = self.get_file_object(model_file, self.bucket_name)
             model_obj = self.read_object(file_object, decode=False)
             model = pickle.loads(model_obj)
+
+
+            logging.info("Expossing the Preprocessor that was used to train the model and the model itself.")
+            self.preprocessing_object = model.preprocessing_object
+            self.trained_model_object = model.trained_model_object
+
             logging.info("Production model loaded from S3 bucket.")
             return model
         except Exception as e:
@@ -128,3 +136,4 @@ class SimpleStorageService(MyModel):
             logging.info("Exited the upload_file method of SimpleStorageService class")
         except Exception as e:
             raise MyException(e, sys) from e
+

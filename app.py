@@ -10,7 +10,7 @@ from typing import Optional
 
 # Importing constants and pipeline modules from the project
 from src.constants import APP_HOST, APP_PORT
-from src.pipline.prediction_pipeline import VehicleData, VehicleDataReggressor
+from src.pipline.prediction_pipeline import  InsuranceDataRegressor
 from src.pipline.training_pipeline import TrainPipeline
 
 # Initialize FastAPI application
@@ -35,10 +35,7 @@ app.add_middleware(
 )
 
 class DataForm:
-    """
-    DataForm class to handle and process incoming form data.
-    This class defines the vehicle-related attributes expected from the form.
-    """
+    
     def __init__(self, request: Request):
         self.request: Request = request
 
@@ -50,7 +47,7 @@ class DataForm:
         self.smoker: Optional[str] = None
                 
 
-    async def get_vehicle_data(self):
+    async def get_data(self):
         """
         Method to retrieve and assign form data to class attributes.
         This method is asynchronous to handle form data fetching without blocking.
@@ -68,9 +65,8 @@ class DataForm:
 # Route to render the main page with the form
 @app.get("/", tags=["authentication"])
 async def index(request: Request):
-    """
-    Renders the main HTML form page for vehicle data input.
-    """
+
+    
     return templates.TemplateResponse(name="insurancedata.html",request=request,context={"context": "Rendering"})
 
 # Route to trigger the model training process
@@ -95,9 +91,9 @@ async def predictRouteClient(request: Request):
     """
     try:
         form = DataForm(request)
-        await form.get_vehicle_data()
+        await form.get_data()
         
-        vehicle_data = VehicleData(
+        predictor = InsuranceDataRegressor(
                                 gender=form.Gender,
                                 smoker=form.smoker,
                                 children=form.children,
@@ -106,14 +102,11 @@ async def predictRouteClient(request: Request):
                                 region=form.Region_Code,
                                 )
 
-        
-        # Convert form data into a DataFrame for the model
-        vehicle_df = vehicle_data.get_vehicle_input_data_frame()
 
         # Initialize the prediction pipeline
-        model_predictor = VehicleDataReggressor(vehicle_df)
-        # Make a prediction and retrieve the result
-        value = model_predictor.predict()[0]
+        model_predictor = predictor.predict()
+
+        value = model_predictor[0]
 
         return templates.TemplateResponse(name="insurancedata.html",request=request,context={"context": value})
     

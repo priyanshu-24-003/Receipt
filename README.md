@@ -1,5 +1,13 @@
 # Receipt
 
+## branch [main]
+   Runs locally and uses functions to push and pull resources from local
+   
+
+## branch [remote]
+   Runs on Production server and uses functions to push and pull resources from cloud [MongoDB, AWS>s3]
+   
+
 ## About
 - An app that Uses Prediction pipeline to respond back the Insurance Premium 
 - More on Mlops Aspect less on Data Science
@@ -24,13 +32,13 @@
 
 ## 📊 Experimentation
 
-* Exploratory Data Analysis (EDA)
+* Exploratory Data Analysis (EDA) : pair_plotting.
 * Model Selection (Random Forest)
 ---
 
 ## ⚙️ Environment Setup
 
-* Conda virtual environment (`python=3.10`)
+* Virtual Envs : python3 -m venv receiptenv
 * Dependency management via `requirements.txt`
 * Package verification using `pip list`
 
@@ -49,8 +57,8 @@
 
 ## 🪵 Logging & Exception Handling
 
-* Centralized logging module
-* Custom exception handling
+* Centralized logging module (src>logger)
+* Custom exception handling (src>exception)
 ---
 
 
@@ -92,7 +100,7 @@
 
 ---
 
-## 🔁 CI/CD Pipeline
+## 🔁 CI/CD Pipeline with Docker Image production
 
 * CI/CD pipeline using GitHub Actions
 * Self-hosted GitHub runner on EC2
@@ -124,3 +132,4 @@
 
 * Feature If enabled Runs the pipeline from any specified point
 * Better Experiment Tracking using MlFlow
+* a new yaml config can be introduced to execute the project either remotely of locally to make the remote and main branch merge.

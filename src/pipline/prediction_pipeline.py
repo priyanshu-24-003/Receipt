@@ -11,7 +11,7 @@ from src.logger import logging
 from pandas import DataFrame
 
 
-class VehicleData:
+class InsuranceDataRegressor:
     def __init__(self,
                 gender,
                 age,
@@ -19,9 +19,10 @@ class VehicleData:
                 smoker,
                 children,
                 region,                
+                prediction_pipeline_config: PremiumPredictorConfig = PremiumPredictorConfig(),
                 ):
         """
-        Vehicle Data constructor
+        Insurance Data constructor
         Input: all features of the trained model for prediction
         """
         try:
@@ -34,14 +35,14 @@ class VehicleData:
 
             self.df_recieved = DataFrame({"sex":[self.sex]*2, "age":[self.age]*2, "region":[self.region,]*2, "smoker":[self.smoker,]*2, "bmi":[self.bmi,]*2, "children":[self.children,]*2})
 
-            
-
         except Exception as e:
             raise MyException(e, sys) from e
 
-    def get_vehicle_input_data_frame(self)-> DataFrame:
+        self.prediction_pipeline_config = prediction_pipeline_config
+
+    def get_insurance_input_data_frame(self)-> DataFrame:
         """
-        This function returns a DataFrame from USvisaData class input
+        This function returns a DataFrame from InsuranceData class input
         """
         try:
             return self.df_recieved
@@ -49,38 +50,26 @@ class VehicleData:
         except Exception as e:
             raise MyException(e, sys) from e
 
-
-class VehicleDataReggressor:
-    def __init__(self, Dataframe:DataFrame, prediction_pipeline_config: PremiumPredictorConfig = PremiumPredictorConfig(),) -> None:
-        """
-        :param prediction_pipeline_config: Configuration for prediction the value
-        """
-        try:
-            self.prediction_pipeline_config = prediction_pipeline_config
-            self.dataframe = Dataframe
-        except Exception as e:
-            raise MyException(e, sys)
-
     def predict(self,) -> str:
-        """
-        This is the method of VehicleDataClassifier
-        Returns: Prediction in string format
-        """
+        
+        
         try:
 
             #Production setup
-            # logging.info("Entered predict method of VehicleDataClassifier class")
-            # print(self.prediction_pipeline_config.model_bucket_name, self.prediction_pipeline_config.model_file_path)
-            # model = SimpleStorageService(self.prediction_pipeline_config.model_bucket_name, self.prediction_pipeline_config.model_file_path)
-            # result =  model.predict(self.dataframe)
+            # logging.info("Entered predict method of InsuranceDataRegressor class")
+            model_class = SimpleStorageService(self.prediction_pipeline_config.model_bucket_name, self.prediction_pipeline_config.model_file_path)
+            model = model_class.load_model()
+            result =  model.predict(self.get_insurance_input_data_frame(),)
 
 
             # local setup
-            # loading the processor/model #  for RemoteLike Local storage class without AWS
-            model = load_object(file_path=self.prediction_pipeline_config.Remote_Like_Model_Path)
-            result = model.predict(self.dataframe,)#  'here is my df recieved from GUI/user'
-            
+            # logging.info("Entered predict method of InsuranceDataRegressor class")
+            # model = load_object(file_path=self.prediction_pipeline_config.Remote_Like_Model_Path)
+            # result = model.predict(self.df_recieved,)
+
+
             return result
         
         except Exception as e:
             raise MyException(e, sys)
+

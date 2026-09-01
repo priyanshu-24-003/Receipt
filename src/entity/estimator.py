@@ -46,6 +46,7 @@ class MyModel:
             X = pd.DataFrame(self.preprocessing_object.transform(dataframe),columns=self.trained_model_object.feature_names_in_)
             logging.info("Starting prediction process.")
 
+
             # Step 2: Perform prediction using the trained model
             logging.info("Using the trained model to get predictions")
             predictions = self.trained_model_object.predict(X)
