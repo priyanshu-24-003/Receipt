@@ -30,6 +30,9 @@
 - Model Pusher  (compare with AWS previous model) --> push to aws(if found better))
 
 
+## Execution Flow:
+![Project Flowchart](./TrainingChart.svg)
+
 ## 📊 Experimentation
 
 * Exploratory Data Analysis (EDA) : pair_plotting.
